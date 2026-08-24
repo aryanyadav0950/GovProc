@@ -1,0 +1,331 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  GOVERNMENT
+  STARTUP
+  EVALUATOR
+  ADMIN
+}
+
+enum OrganizationType {
+  GOVERNMENT
+  STARTUP
+}
+
+enum ChallengeStatus {
+  DRAFT
+  OPEN
+  EVALUATION
+  PILOT
+  COMPLETED
+  CLOSED
+}
+
+enum EligibilityStatus {
+  PENDING
+  ELIGIBLE
+  NOT_ELIGIBLE
+  NEEDS_REVIEW
+}
+
+enum DocumentStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  NEEDS_REVIEW
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum RecommendationType {
+  REPILOT
+  PROCURE
+  SCALE
+  DO_NOT_PROCEED
+}
+
+model Organization {
+  id        String           @id @default(cuid())
+  name      String
+  type      OrganizationType
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  users      User[]
+  startups   Startup[]
+  challenges Challenge[] @relation("DepartmentChallenges")
+}
+
+model User {
+  id             String   @id @default(cuid())
+  name           String
+  email          String   @unique
+  passwordHash   String?
+  role           UserRole
+  organizationId String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization? @relation(fields: [organizationId], references: [id])
+
+  evaluations Evaluation[]
+}
+
+model Startup {
+  id             String  @id @default(cuid())
+  organizationId String  @unique
+  description    String?
+  sector         String?
+  foundedYear    Int?
+  teamSize       Int?
+  technologies   String?
+  funding        Float?
+  revenue        Float?
+  readinessLevel Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  documents   Document[]
+  eligibility EligibilityCheck[]
+  matches     StartupMatch[]
+  assessments Assessment[]
+  evaluations Evaluation[]
+  pilots      Pilot[]
+}
+
+model Challenge {
+  id                   String          @id @default(cuid())
+  departmentId         String
+  title                String
+  description          String
+  problemStatement     String
+  sector               String?
+  requiredCapabilities String?
+  budgetRange          String?
+  pilotDuration        Int?
+  status               ChallengeStatus @default(DRAFT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  department Organization @relation("DepartmentChallenges", fields: [departmentId], references: [id])
+
+  eligibility EligibilityCheck[]
+  matches     StartupMatch[]
+  assessments Assessment[]
+  evaluations Evaluation[]
+  pilots      Pilot[]
+}
+
+model EligibilityCheck {
+  id          String            @id @default(cuid())
+  startupId   String
+  challengeId String
+  status      EligibilityStatus @default(PENDING)
+  reason      String?
+  checkedAt   DateTime?
+
+  startup   Startup   @relation(fields: [startupId], references: [id])
+  challenge Challenge @relation(fields: [challengeId], references: [id])
+
+  @@unique([startupId, challengeId])
+}
+
+model StartupMatch {
+  id              String   @id @default(cuid())
+  startupId       String
+  challengeId     String
+  matchScore      Float
+  capabilityScore Float?
+  sectorScore     Float?
+  readinessScore  Float?
+  explanation     String?
+  createdAt       DateTime @default(now())
+
+  startup   Startup   @relation(fields: [startupId], references: [id])
+  challenge Challenge @relation(fields: [challengeId], references: [id])
+
+  @@unique([startupId, challengeId])
+}
+
+model Document {
+  id           String         @id @default(cuid())
+  startupId    String
+  fileName     String
+  documentType String
+  storageUrl   String?
+  status       DocumentStatus @default(PENDING)
+  uploadedAt   DateTime       @default(now())
+
+  startup Startup @relation(fields: [startupId], references: [id])
+}
+
+model Assessment {
+  id                  String     @id @default(cuid())
+  startupId           String
+  challengeId         String
+  overallScore        Float?
+  problemFit          Float?
+  technicalCapability Float?
+  financialHealth     Float?
+  teamCapability      Float?
+  scalability         Float?
+  technologyReadiness Float?
+  securityReadiness   Float?
+  pilotReadiness      Float?
+  riskLevel           RiskLevel?
+  summary             String?
+  createdAt           DateTime   @default(now())
+
+  startup   Startup   @relation(fields: [startupId], references: [id])
+  challenge Challenge @relation(fields: [challengeId], references: [id])
+
+  risks  Risk[]
+  claims Claim[]
+
+  @@unique([startupId, challengeId])
+}
+
+model Risk {
+  id           String    @id @default(cuid())
+  assessmentId String
+  title        String
+  description  String
+  level        RiskLevel
+  mitigation   String?
+
+  assessment Assessment @relation(fields: [assessmentId], references: [id])
+}
+
+model Claim {
+  id           String  @id @default(cuid())
+  assessmentId String
+  claim        String
+  evidence     String?
+  status       String
+  confidence   Float?
+
+  assessment Assessment @relation(fields: [assessmentId], references: [id])
+}
+
+model Evaluation {
+  id           String   @id @default(cuid())
+  evaluatorId  String
+  startupId    String
+  challengeId  String
+  problemFit   Float?
+  technical    Float?
+  financial    Float?
+  scalability  Float?
+  overallScore Float?
+  comments     String?
+  createdAt    DateTime @default(now())
+
+  evaluator User      @relation(fields: [evaluatorId], references: [id])
+  startup   Startup   @relation(fields: [startupId], references: [id])
+  challenge Challenge @relation(fields: [challengeId], references: [id])
+
+  @@unique([evaluatorId, startupId, challengeId])
+}
+
+model Pilot {
+  id          String    @id @default(cuid())
+  startupId   String
+  challengeId String
+  name        String
+  description String?
+  startDate   DateTime
+  endDate     DateTime?
+  createdAt   DateTime  @default(now())
+
+  startup   Startup   @relation(fields: [startupId], references: [id])
+  challenge Challenge @relation(fields: [challengeId], references: [id])
+
+  milestones     Milestone[]
+  kpis           KPI[]
+  validation     Validation?
+  payment        Payment?
+  recommendation Recommendation?
+}
+
+model Milestone {
+  id          String    @id @default(cuid())
+  pilotId     String
+  title       String
+  description String?
+  dueDate     DateTime?
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+
+  pilot Pilot @relation(fields: [pilotId], references: [id])
+}
+
+model KPI {
+  id          String  @id @default(cuid())
+  pilotId     String
+  name        String
+  target      Float
+  unit        String?
+  description String?
+
+  pilot   Pilot       @relation(fields: [pilotId], references: [id])
+  results KPIResult[]
+}
+
+model KPIResult {
+  id          String   @id @default(cuid())
+  kpiId       String
+  value       Float
+  recordedAt  DateTime @default(now())
+  evidenceUrl String?
+
+  kpi KPI @relation(fields: [kpiId], references: [id])
+}
+
+model Validation {
+  id          String    @id @default(cuid())
+  pilotId     String    @unique
+  passed      Boolean
+  score       Float?
+  comments    String?
+  validatedAt DateTime?
+
+  pilot Pilot @relation(fields: [pilotId], references: [id])
+}
+
+model Payment {
+  id        String    @id @default(cuid())
+  pilotId   String    @unique
+  milestone String?
+  amount    Float?
+  status    String
+  paidAt    DateTime?
+
+  pilot Pilot @relation(fields: [pilotId], references: [id])
+}
+
+model Recommendation {
+  id          String             @id @default(cuid())
+  pilotId     String             @unique
+  type        RecommendationType
+  score       Float?
+  explanation String?
+  createdAt   DateTime           @default(now())
+
+  pilot Pilot @relation(fields: [pilotId], references: [id])
+}
