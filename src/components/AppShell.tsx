@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { ThemeToggle } from "./ThemeToggle";
 
 export type AppShellProps = {
   user?: {
@@ -94,20 +95,20 @@ export function AppShell({ user, children }: AppShellProps) {
             </button>
 
             <Link href="/dashboard" className="flex items-center gap-3 group">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 font-black text-white shadow-md shadow-blue-500/20">
-                SIH
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 font-black text-white shadow-md shadow-blue-500/20 text-base tracking-wide">
+                GP
               </div>
               <div className="hidden sm:block">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-black uppercase tracking-widest text-blue-400">
-                    SIH26136
+                    GOVPROC
                   </span>
-                  <span className="rounded bg-slate-800 px-1.5 py-0.2 text-[9px] font-bold text-slate-400 uppercase">
-                    National Portal
+                  <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[9px] font-bold text-slate-400 uppercase tracking-wide">
+                    INNOVATION PROCUREMENT
                   </span>
                 </div>
                 <h1 className="text-sm font-extrabold text-white leading-tight group-hover:text-blue-300 transition">
-                  GovTech Innovation Procurement
+                  Government Innovation Procurement Platform
                 </h1>
               </div>
             </Link>
@@ -131,6 +132,9 @@ export function AppShell({ user, children }: AppShellProps) {
             >
               {roleLabel}
             </span>
+
+            {/* Theme Switcher Toggle */}
+            <ThemeToggle />
 
             {/* User Dropdown / Sign Out Button */}
             <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
@@ -211,8 +215,8 @@ export function AppShell({ user, children }: AppShellProps) {
           </div>
 
           <div className="border-t border-slate-800/80 pt-3 text-[10px] text-slate-500 flex flex-col gap-1">
-            <span className="font-semibold text-slate-400">SIH 2024 / SIH26136</span>
-            <span>Government Startup Procurement</span>
+            <span className="font-semibold text-slate-400">GovProc Platform</span>
+            <span>Government Innovation Procurement</span>
           </div>
         </aside>
 
@@ -227,16 +231,19 @@ export function AppShell({ user, children }: AppShellProps) {
               <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
                 <div className="flex items-center gap-2">
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 font-bold text-white text-xs">
-                    SIH
+                    GP
                   </div>
-                  <span className="font-bold text-sm text-white">Innovation Portal</span>
+                  <span className="font-bold text-sm text-white">GovProc Portal</span>
                 </div>
-                <button
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-900 hover:text-white"
-                >
-                  ✕
-                </button>
+                <div className="flex items-center gap-2">
+                  <ThemeToggle />
+                  <button
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-900 hover:text-white"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
 
               <nav className="space-y-1.5">

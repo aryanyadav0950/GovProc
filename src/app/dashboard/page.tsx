@@ -82,7 +82,7 @@ export default async function DashboardPage() {
                   Government Innovation Command Center
                 </span>
                 <span className="text-xs text-slate-400">
-                  SIH26136 Production Platform
+                  GovProc Production Platform
                 </span>
               </div>
 
@@ -409,7 +409,7 @@ export default async function DashboardPage() {
             </div>
 
             <div className="rounded-xl border border-blue-900/50 bg-blue-950/20 p-3.5 text-xs text-slate-300">
-              <span className="font-bold text-blue-400">SIH26136 Architecture:</span> Deterministic, explainable, and human-in-the-loop decision platform.
+              <span className="font-bold text-blue-400">GovProc Architecture:</span> Deterministic, explainable, and human-in-the-loop decision platform.
             </div>
           </section>
         </div>

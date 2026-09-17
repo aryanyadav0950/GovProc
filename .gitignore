@@ -41,6 +41,9 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
-/.agents/
-.vercel
-.env*
+
+# agent & ide configs
+.agents/
+skills-lock.json
+.claude/
+.windsurf/

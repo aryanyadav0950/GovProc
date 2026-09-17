@@ -10,7 +10,7 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log("Seeding SIH26136 Demo Database...");
+  console.log("Seeding GovProc Demo Database...");
 
   const password = await bcrypt.hash("Demo@12345", 10);
 
@@ -480,7 +480,7 @@ async function main() {
   });
 
   console.log("--------------------------------------------------");
-  console.log("SIH26136 Prototype Seed Data Loaded Successfully!");
+  console.log("GovProc Prototype Seed Data Loaded Successfully!");
   console.log("--------------------------------------------------");
   console.log("Demo Credentials for Testing:");
   console.log("  Role: Government Officer -> Email: department@gov-demo.in | Password: Demo@12345");

@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -41,14 +42,17 @@ export default function LoginPage() {
         <div>
           <div className="flex items-center justify-between">
             <span className="text-xs font-black tracking-widest text-blue-400 uppercase">
-              SIH26136 • National Portal
+              GOVPROC • INNOVATION PROCUREMENT
             </span>
-            <Link
-              href="/"
-              className="text-xs font-semibold text-slate-400 hover:text-white transition"
-            >
-              ← Back to Portal
-            </Link>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <Link
+                href="/"
+                className="text-xs font-semibold text-slate-400 hover:text-white transition"
+              >
+                ← Back
+              </Link>
+            </div>
           </div>
 
           <h1 className="mt-3 text-2xl sm:text-3xl font-black text-white tracking-tight">

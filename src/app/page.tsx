@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { StatusBadge } from "@/components/StatusBadge";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default async function HomePage() {
   const session = await getServerSession(authOptions);
@@ -62,12 +63,12 @@ export default async function HomePage() {
       <header className="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 font-black text-white shadow-lg shadow-blue-500/20">
-              SIH
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 font-black text-white shadow-lg shadow-blue-500/20 text-base tracking-wide">
+              GP
             </div>
             <div>
               <span className="text-[10px] font-black uppercase tracking-widest text-blue-400">
-                SIH26136 • National Portal
+                GOVPROC • INNOVATION PROCUREMENT
               </span>
               <h1 className="text-sm font-extrabold text-white leading-tight">
                 Government Startup Innovation Procurement Platform
@@ -76,6 +77,7 @@ export default async function HomePage() {
           </div>
 
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <Link
               href="/login"
               className="rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-600/30 hover:bg-blue-500 transition"
@@ -91,7 +93,7 @@ export default async function HomePage() {
         <div className="text-center max-w-4xl mx-auto space-y-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-blue-800 bg-blue-950/60 px-4 py-1.5 text-xs font-bold text-blue-300">
             <span className="flex h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
-            <span>Smart India Hackathon 2024 — Problem Statement SIH26136</span>
+            <span>GovProc • Government Innovation Procurement Platform</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight">
@@ -172,14 +174,14 @@ export default async function HomePage() {
             {/* Final CTA Card */}
             <div className="rounded-2xl border border-purple-900/80 bg-gradient-to-br from-purple-950/60 to-slate-900 p-6 shadow-xl flex flex-col justify-between space-y-4">
               <div>
-                <span className="rounded bg-purple-900/80 px-2 py-0.5 text-[10px] font-black uppercase text-purple-200">
-                  Ready for Evaluation
+                <span className="rounded bg-purple-900/80 px-2 py-0.5 text-[10px] font-black uppercase text-purple-200 tracking-wide">
+                  PLATFORM DEMO
                 </span>
                 <h3 className="mt-3 text-lg font-bold text-white">
-                  Experience Live Demo
+                  Explore GovProc
                 </h3>
                 <p className="mt-1 text-xs text-purple-200/80 leading-relaxed">
-                  Explore pre-seeded live municipal pilots, KPI logs, and explainable GFR recommendation engine.
+                  Explore the complete government innovation procurement workflow, from challenge formulation and startup discovery to risk assessment, pilot validation, and final recommendation.
                 </p>
               </div>
 
@@ -187,7 +189,7 @@ export default async function HomePage() {
                 href="/login"
                 className="rounded-xl bg-purple-600 py-2.5 text-center text-xs font-bold text-white shadow-lg hover:bg-purple-500 transition"
               >
-                Launch SIH Demo →
+                Explore Platform →
               </Link>
             </div>
           </div>
@@ -196,7 +198,7 @@ export default async function HomePage() {
         {/* Compliance Footer Banner */}
         <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <div>
-            <span className="font-bold text-slate-200">SIH26136 Government Innovation Procurement Platform</span>
+            <span className="font-bold text-slate-200">GovProc — Government Innovation Procurement Platform</span>
             <p className="mt-0.5 text-slate-500">
               Developed in accordance with General Financial Rules (GFR 2017) Rule 194 & CVC transparency guidelines.
             </p>
